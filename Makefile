@@ -1,28 +1,28 @@
-OUT := out
+OUT := $(CURDIR)/out
 
 .PHONY: all developer user clean distclean
 
-all: developer
+all: developer user
 
 developer:
 	mkdir -p $(OUT)
-	latexmk -pdf \
+	cd developer-manual && latexmk -pdf \
 		-output-directory=$(OUT) \
-		developer-manual/developer-manual.tex
+		developer-manual.tex
 
 user:
 	mkdir -p $(OUT)
-	latexmk -pdf \
+	cd user-manual && latexmk -pdf \
 		-output-directory=$(OUT) \
-		user-manual/user-manual.tex
+		user-manual.tex
 
 clean:
-	latexmk -c \
+	cd developer-manual && latexmk -c \
 		-output-directory=$(OUT) \
-		developer-manual/developer-manual.tex
-	- latexmk -c \
+		developer-manual.tex
+	-cd user-manual && latexmk -c \
 		-output-directory=$(OUT) \
-		user-manual/user-manual.tex
+		user-manual.tex
 
 distclean:
 	rm -rf $(OUT)

@@ -1,0 +1,49 @@
+name: Build Documentation
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y latexmk texlive-full
+
+      - name: Build documentation
+        run: make
+
+      - name: Upload PDFs as workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: filament-manager-documentation
+          path: |
+            out/developer-manual.pdf
+            out/user-manual.pdf
+
+      - name: Create GitHub release for tags
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Filament Manager Documentation ${{ github.ref_name }}" \
+            --generate-notes \
+            out/developer-manual.pdf \
+            out/user-manual.pdf
