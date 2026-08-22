@@ -1,0 +1,21 @@
+# Generated PDF output
+out/
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+# Editor / temporary files
+*~
+*.swp
+*.swo
