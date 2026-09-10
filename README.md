@@ -31,5 +31,6 @@ make
 ```
 
 The generated PDF files are placed in the out/ directory:
+
 out/developer-manual.pdf
 out/user-manual.pdf
